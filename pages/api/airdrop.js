@@ -41,6 +41,15 @@ async function airdropSend(addressAirdropSend) {
  
 export default async function handler(req, res) {
     console.log(req.query)
+    console.log(req.body)
+
+    const human = await validateHuman(req.body)
+    if (!human) {
+       res.status(400);
+       res.json({ erro: "Please, you are not fooling us, bot." }) 
+       return;
+    }
+
     const response = await fetch(`https://api.celoscan.io/api?module=account&action=balancemulti&address=${(req.query.address)}`)
     const celoAddress = await response.json()
     const addressAirdropSend = await addressAirdrop(celoAddress)
@@ -50,4 +59,16 @@ export default async function handler(req, res) {
     res.status(200).json(
         sends
     )
+}
+
+async function validateHuman(token) {
+    const secret = process.env.RECAPTCHA_SC_PK;
+    const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,
+        {
+            method: "POST",
+        }
+    )
+    const data = await response.json();
+    console.log(data, "recaptcha data");
+    return data.success;
 }
