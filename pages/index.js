@@ -2,76 +2,70 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import ReCAPTCHA from "react-google-recaptcha";
-import React from "react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 
 
 export default function Home() {
-  const [address, setAddress] = React.useState("");
-  const recaptchaRef = React.useRef(null);
-
-  const handleChange = ({ target: { value } }) => {
-    setAddress(value);
-    
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    console.log(address)
-    
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
 
-    recaptchaRef.current.execute();
-
-
-  };
-  
-  const onReCAPTCHAChange = async (token) => {
-
-    if (!token) {
-      return;
-    }
-    const response = await fetch("/api/celo", {
-      method: "POST",
-      body: JSON.stringify({ address, token }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log(response)
-
-
-    recaptchaRef.current.reset();
-  };
+  const [submitting, setSubmitting ] = useState(false);
+  const [serverErrors, setServerErrors] = useState([]);
+  const reRef = useRef(null);
 
   return (
-    <div className="container">
-      <Head>
-        <title>Add Funds Celo</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div id="feedback-form">
-        <h2 className="header">Add Funds</h2>
-        <div>
-          <form onSubmit={handleSubmit}>
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              size="invisible"
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-              onChange={onReCAPTCHAChange}
-            />
-            <input
-              onChange={handleChange}
-              required
-              type="address"
-              name="address"
-              placeholder="address"
-            />
-            <button type="submit">Get Stared</button>
-          </form>
-        </div>
-      </div>
-    </div>
+
+    <form onSubmit={handleSubmit( async (formData) => {
+      console.log(formData)
+      setSubmitting(true);
+      setServerErrors([]);
+
+      const token = await reRef.current.getValue()  ;
+      console.log(token)
+      reRef.current.reset();
+
+      const response = await fetch(`/api/${formData.network}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          address: formData.address,
+          token,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data)
+        if (data.errors) {
+          setServerErrors(data.errors);
+        } else {
+          console.log("success, redirect to home page");
+        }
+
+        setSubmitting(false);
+    } 
+      )}>
+
+      <h1>Fund your Account</h1>
+      <div></div>
+      <div>Add Funds</div>
+      <div>Enter the address of your account to receive additional funds.</div>
+      <input defaultValue="alfajores" {...register("network")} />
+      <div></div>
+      <input  {...register("address")} />
+      <input type="submit" />
+      
+      {errors.exampleRequired && <span>This field is required</span>}
+      
+      <ReCAPTCHA
+        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+        ref={reRef}
+      />  
+
+      
+    </form>
   );
+
 }

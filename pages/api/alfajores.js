@@ -43,14 +43,14 @@ export default async function handler(req, res) {
     console.log(req.query)
     console.log(req.body)
 
-    const human = await validateHuman(req.body.captchaCode)
+    const human = await validateHuman(req.body.token)
     if (!human) {
        res.status(400);
        res.json({ erro: "Please, you are not fooling us, bot." }) 
        return;
     }
 
-    const response = await fetch(`https://api-alfajores.celoscan.io/api?module=account&action=balancemulti&address=${(req.query.address)}`)
+    const response = await fetch(`https://api-alfajores.celoscan.io/api?module=account&action=balancemulti&address=${(req.body.address)}`)
     const celoAddress = await response.json()
     const addressAirdropSend = await addressAirdrop(celoAddress)
     const sends = await airdropSend(addressAirdropSend)
