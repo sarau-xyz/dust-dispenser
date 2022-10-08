@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     console.log(req.query)
     console.log(req.body)
 
-    const human = await validateHuman(req.body)
+    const human = await validateHuman(req.body.captchaCode)
     if (!human) {
        res.status(400);
        res.json({ erro: "Please, you are not fooling us, bot." }) 
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 }
 
 async function validateHuman(token) {
-    const secret = process.env.RECAPTCHA_SC_PK;
+    const secret = process.env.RECAPTCHA_SECRET_KEY;
     const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,
         {
             method: "POST",
