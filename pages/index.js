@@ -11,48 +11,36 @@ export default function Home() {
 
   const handleChange = ({ target: { value } }) => {
     setAddress(value);
+    
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    console.log(address)
+    
+
+
     recaptchaRef.current.execute();
+
+
   };
+  
+  const onReCAPTCHAChange = async (token) => {
 
-  const onReCAPTCHAChange = async (captchaCode) => {
-
-    if (!captchaCode) {
+    if (!token) {
       return;
     }
+    const response = await fetch("/api/celo", {
+      method: "POST",
+      body: JSON.stringify({ address, token }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    try {
-      const response = await fetch("/api/celo", {
-        method: "POST",
-        body: JSON.stringify({ address, captcha: captchaCode }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        // If the response is ok than show the success alert
-        alert("address registered successfully");
-      } else {
-        // Else throw an error with the message returned
-        // from the API
-        const error = await response.json();
-        throw new Error(error.message)
-      }
-    } catch (error) {
-      alert(error?.message || "Something went wrong");
-    } finally {
-      // Reset the hCaptcha when the request has failed or succeeeded
-      // so that it can be executed again if user submits another email.
-      setAddress("");
-    }
+    console.log(response)
 
-
-
-    alert(`Hey, ${address}`);
 
     recaptchaRef.current.reset();
   };

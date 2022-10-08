@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     console.log(req.query)
     console.log(req.body)
 
-    const human = await validateHuman(req.body)
+    const human = await validateHuman(req.body.captchaCode)
     if (!human) {
        res.status(400);
        res.json({ erro: "Please, you are not fooling us, bot." }) 
