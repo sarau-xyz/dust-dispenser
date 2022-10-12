@@ -13,7 +13,7 @@ async function addressAirdrop(celoAddress) {
 async function airdropSend(addressAirdropSend) {
     const privateKey = process.env.PK
     const amount = "0.0001"
-    const provider = new CeloProvider("https://alfajores-forno.celo-testnet.org")
+    const provider = new CeloProvider("https://celo-hackathon.lavanet.xyz/celo-alfajores/http")
     await provider.ready
     const wallet = new CeloWallet(privateKey, provider)
 
