@@ -42,6 +42,7 @@ export class DustHandler {
   }
 
   async handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log(req.body, "req.body");
     const human = await this.validateHuman(req.body.token);
     if (!human) {
       return res
