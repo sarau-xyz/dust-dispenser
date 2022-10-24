@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import React from "react";
 
-export const Home = () => {
+const Home = () => {
   const {
     register,
     handleSubmit,
@@ -68,3 +68,5 @@ export const Home = () => {
     </form>
   );
 };
+
+export default Home;

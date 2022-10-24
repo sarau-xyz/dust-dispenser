@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { DustHandler, SUPPORTED_NETWORKS } from "./utils/DustHandler";
+import { DustHandler, SUPPORTED_NETWORKS } from "../../utils/DustHandler";
 
 const dustHandler = new DustHandler(SUPPORTED_NETWORKS.CELO);
 
