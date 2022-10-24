@@ -9,3 +9,9 @@ export default async function handler(
 ) {
   return dustHandler.handler(req, res);
 }
+
+export const config = {
+  api: {
+    bodyParser: false
+  }
+}

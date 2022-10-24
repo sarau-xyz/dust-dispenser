@@ -1,6 +1,7 @@
 import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
 import { ethers } from "ethers";
 import { NextApiRequest, NextApiResponse } from "next";
+import formidable from "formidable";
 
 const AIRDROP_AMOUNT = "0.0001";
 
@@ -8,6 +9,11 @@ export enum SUPPORTED_NETWORKS {
   CELO = "celo",
   ALFAJORES = "alfajores",
 }
+
+const form = new formidable.IncomingForm({
+  maxFields: 2,
+  allowEmptyFiles: false,
+});
 
 export class DustHandler {
   private provider: CeloProvider;
@@ -42,33 +48,35 @@ export class DustHandler {
   }
 
   async handler(req: NextApiRequest, res: NextApiResponse) {
-    console.log(req.body, "req.body");
-    console.log(req.body.token, "req.body.token");
-    const human = await this.validateHuman(req.body.token);
-    console.log(human, "human");
-    if (!human) {
-      return res
-        .status(400)
-        .json({ error: "Please, you are not fooling us, bot." });
-    }
+    form.parse(req, async function (err, { address, token }, files) {
+      console.log(token, "req.body.token");
 
-    const response = await fetch(
-      `${this.scanApi}?module=account&action=balance&address=${req.body.address}`
-    );
+      const human = await this.validateHuman(token);
+      console.log(human, "human");
+      if (!human) {
+        return res
+          .status(400)
+          .json({ error: "Please, you are not fooling us, bot." });
+      }
 
-    const balanceRes = (await response.json()) as {
-      status: string;
-      message: string;
-      result: string;
-    };
+      const response = await fetch(
+        `${this.scanApi}?module=account&action=balance&address=${address}`
+      );
 
-    if (balanceRes.result === "0") {
-      await this.sendAirdrop(req.body.address);
+      const balanceRes = (await response.json()) as {
+        status: string;
+        message: string;
+        result: string;
+      };
 
-      res.status(200).json({ success: true });
-    } else {
-      res.status(403).json({ success: false });
-    }
+      if (balanceRes.result === "0") {
+        await this.sendAirdrop(address);
+
+        res.status(200).json({ success: true });
+      } else {
+        res.status(403).json({ success: false });
+      }
+    });
   }
 
   async validateHuman(token: string) {
