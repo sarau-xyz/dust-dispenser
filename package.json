@@ -19,6 +19,8 @@
     "react-hook-form": "^7.37.0"
   },
   "devDependencies": {
+    "@types/node": "^18.11.4",
+    "@types/react-google-recaptcha": "^2.1.5",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1"
   }
