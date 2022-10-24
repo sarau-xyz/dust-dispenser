@@ -39,12 +39,6 @@ export class DustHandler {
       to: address,
       value: ethers.utils.parseEther(AIRDROP_AMOUNT),
     });
-
-    const txReceipt = await txResponse.wait();
-
-    console.info(
-      `transaction hash received: ${txReceipt.transactionHash} - address: ${address}`
-    );
   }
 
   async handler(req: NextApiRequest, res: NextApiResponse) {
