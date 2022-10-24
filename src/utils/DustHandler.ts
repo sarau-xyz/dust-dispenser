@@ -50,6 +50,7 @@ export class DustHandler {
   async handler(req: NextApiRequest, res: NextApiResponse) {
     form.parse(req, async (err, { address, token }, files) => {
       console.log(token, "req.body.token");
+      console.log(address, "req.body.address");
 
       const human = await this.validateHuman(token);
       console.log(human, "human");
