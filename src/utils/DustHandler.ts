@@ -65,11 +65,7 @@ export class DustHandler {
       result: string;
     };
 
-    if (
-      ethers.BigNumber.from(ethers.utils.formatEther(balanceRes.result)).eq(
-        ethers.BigNumber.from("0")
-      )
-    ) {
+    if (balanceRes.result === "0") {
       await this.sendAirdrop(req.body.address);
 
       res.status(200).json({ success: true });
