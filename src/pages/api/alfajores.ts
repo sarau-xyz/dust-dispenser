@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { DustHandler, SUPPORTED_NETWORKS } from "../../utils/DustHandler";
 
-const dustHandler = new DustHandler(SUPPORTED_NETWORKS.CELO);
+const dustHandler = new DustHandler(SUPPORTED_NETWORKS.ALFAJORES);
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,6 +12,6 @@ export default async function handler(
 
 export const config = {
   api: {
-    bodyParser: false
-  }
-}
+    bodyParser: false,
+  },
+};
