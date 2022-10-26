@@ -1,7 +1,7 @@
-# Ipfs-uploader
-It is a service made to save images securely in IPFS.
+# Dust-dispenser 
+Dust-dispenser is an airdrop service for Celo Network, which is connected to Lava Network RPC Endpoint. 
 
-To use it, just put the credentials in the .env file.
+That makes it possible, by purchasing a fraction of Celo, to create small free events on the sarau.xyz dapp.
 
 ## Getting Started
 
