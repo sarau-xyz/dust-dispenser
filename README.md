@@ -8,7 +8,8 @@ That makes it possible, by purchasing a fraction of Celo, to create small free e
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
+1. Fork / clone this repo
+2. npm install
+3. npm run dev to test locally
+4. npm run deploy to deploy
 ```
