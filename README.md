@@ -1,15 +1,31 @@
 # Dust-dispenser 
 Dust-dispenser is an airdrop service for Celo Network, which is connected to Lava Network RPC Endpoint. 
 
-That makes it possible, by purchasing a fraction of Celo, to create small free events on the sarau.xyz dapp.
+This allows getting fractions of Celo for mints of the NFTs in the Sarau.XYZ dApp.
 
-## Getting Started
+# What is Sarau?
 
-First, run the development server:
+Sarau is a dApp that enable users to collect NFTs that represent moments in a real life, for example, you can distribute to your audience an exclusive NFT to remember a event that you have created.
+
+# Requirements
+
+- Node.js v16
+
+# Getting Started
+
+1. Fork / clone this repo
+2. Create `.env` file
+3. Add credentials as in `example.env` file
 
 ```bash
-1. Fork / clone this repo
-2. npm install
-3. npm run dev to test locally
-4. npm run deploy to deploy
+npm install
+npm run dev to test locally
+npm run deploy to deploy
 ```
+
+# Build with
+
+- Lavanet 🌋
+- Celo 💚
+- CeloScan 🧶
+- NextJs ⚛️
